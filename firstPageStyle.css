@@ -1,0 +1,34 @@
+@CHARSET "ISO-8859-1";
+body {
+	height: 100%;
+}
+header{
+    padding: 1em;
+    color: white;
+    background-color: white;
+    clear: left;
+    text-align: left;
+    border-bottom : 3px solid #3973ac;
+}
+.wrap {
+    width: 100%;
+    height: 100%;
+}
+table {
+    
+    width: 40%;
+    height : 60%;
+    margin:2em auto;
+}
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+    color : #2d5986;
+    
+}
+p {
+	color : #2d5986;
+	text-align: center;
+	font-size: 28px;
+	font-weight: bold;
+}

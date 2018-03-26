@@ -1,0 +1,83 @@
+package servlets;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import claseResurse.Profesor;
+import claseResurse.Student;
+import database.PrelucrariDB;
+
+/**
+ * Servlet implementation class ProfesorServlet
+ */
+@WebServlet("/ProfesorServlet")
+public class ProfesorServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ProfesorServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		List<Profesor> profesori= new ArrayList<Profesor>();
+		if(request.getParameter("cauta")!=null)
+		{
+			System.out.println("Se cauta profesorul "+request.getParameter("nume"));
+			profesori=PrelucrariDB.returnProfesor(request.getParameter("nume"));
+			
+			if(!profesori.isEmpty())
+				{
+				request.setAttribute("listaRezultat", profesori);
+				System.out.println("Lista profesorilor care corespund numelui "+profesori.get(0).getNume());
+				}
+			else 
+				request.setAttribute("notFound", "Profesorul nu exista");
+			request.getRequestDispatcher("profesori.jsp").forward(request,response);
+		}
+		if(request.getParameter("adaugaProf")!=null)
+		{
+			
+			if(request.getParameter("nume_prof")!=null&&request.getParameter("prenume_prof")!=null&&request.getParameter("titulatura_prof")!=null&&request.getParameter("dep_add")!=null){
+				
+					if(PrelucrariDB.returnProfesorDublura(request.getParameter("nume_prof"),request.getParameter("prenume_prof"),request.getParameter("titulatura_prof"),request.getParameter("dep_add"))!=null)
+					{
+						request.setAttribute("exista", "Acest profesor exista in baza de date!");
+						System.out.println(PrelucrariDB.returnProfesorDublura(request.getParameter("nume_prof"),request.getParameter("prenume_prof"),request.getParameter("titulatura_prof"),request.getParameter("dep_add")));
+					}
+				else
+				{
+					PrelucrariDB.insertProfesor(request.getParameter("nume_prof"), request.getParameter("prenume"), request.getParameter("titulatura"), request.getParameter("dep_add"));
+					System.out.println("S-a inserat profesorul "+request.getParameter("nume_prof")+" "+request.getParameter("prenume"));
+				}
+			}
+			else
+				request.setAttribute("incomplet", "Toate campurile sunt obligatorii");
+			request.getRequestDispatcher("profesori.jsp").forward(request,response);
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
