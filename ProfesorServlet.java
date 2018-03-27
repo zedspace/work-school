@@ -36,6 +36,7 @@ public class ProfesorServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		List<Profesor> profesori= new ArrayList<Profesor>();
+		List<Profesor> profesorDuplicat=new ArrayList<Profesor>();
 		if(request.getParameter("cauta")!=null)
 		{
 			System.out.println("Se cauta profesorul "+request.getParameter("nume"));
@@ -53,17 +54,17 @@ public class ProfesorServlet extends HttpServlet {
 		if(request.getParameter("adaugaProf")!=null)
 		{
 			
-			if(request.getParameter("nume_prof")!=null&&request.getParameter("prenume_prof")!=null&&request.getParameter("titulatura_prof")!=null&&request.getParameter("dep_add")!=null){
-				
-					if(PrelucrariDB.returnProfesorDublura(request.getParameter("nume_prof"),request.getParameter("prenume_prof"),request.getParameter("titulatura_prof"),request.getParameter("dep_add"))!=null)
-					{
-						request.setAttribute("exista", "Acest profesor exista in baza de date!");
-						System.out.println(PrelucrariDB.returnProfesorDublura(request.getParameter("nume_prof"),request.getParameter("prenume_prof"),request.getParameter("titulatura_prof"),request.getParameter("dep_add")));
-					}
+			if(request.getParameter("nume_prof")!=null&&request.getParameter("prenume_prof")!=null&&request.getParameter("nume_prof")!=""&&request.getParameter("prenume_prof")!=""){
+				profesorDuplicat=PrelucrariDB.returnProfesorDublura(request.getParameter("nume_prof"),request.getParameter("prenume_prof"),request.getParameter("titulatura_prof"),request.getParameter("dep_add"));
+				if(!profesorDuplicat.isEmpty())
+				{
+					request.setAttribute("incomplet", "Profesorul pe care ati dorit sa il inserati exista deja in baza de date!");
+					System.out.println(PrelucrariDB.returnProfesorDublura(request.getParameter("nume_prof"),request.getParameter("prenume_prof"),request.getParameter("titulatura_prof"),request.getParameter("dep_add")));
+				}
 				else
 				{
-					PrelucrariDB.insertProfesor(request.getParameter("nume_prof"), request.getParameter("prenume"), request.getParameter("titulatura"), request.getParameter("dep_add"));
-					System.out.println("S-a inserat profesorul "+request.getParameter("nume_prof")+" "+request.getParameter("prenume"));
+					PrelucrariDB.insertProfesor(request.getParameter("nume_prof"), request.getParameter("prenume_prof"), request.getParameter("titulatura_prof"), request.getParameter("dep_add"));
+					System.out.println("S-a inserat profesorul "+request.getParameter("nume_prof")+" "+request.getParameter("prenume_prof"));
 				}
 			}
 			else
