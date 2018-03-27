@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import claseResurse.Profesor;
 import claseResurse.Student;
 import database.PrelucrariDB;
+import sun.dc.pr.PRError;
 
 /**
  * Servlet implementation class ProfesorServlet
@@ -32,11 +33,12 @@ public class ProfesorServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		List<Profesor> profesori= new ArrayList<Profesor>();
 		List<Profesor> profesorDuplicat=new ArrayList<Profesor>();
+		List<Profesor> profesorFiltru=new ArrayList<Profesor>();
 		if(request.getParameter("cauta")!=null)
 		{
 			System.out.println("Se cauta profesorul "+request.getParameter("nume"));
@@ -71,8 +73,25 @@ public class ProfesorServlet extends HttpServlet {
 				request.setAttribute("incomplet", "Toate campurile sunt obligatorii");
 			request.getRequestDispatcher("profesori.jsp").forward(request,response);
 		}
+		
+		if(request.getParameter("cautaFiltru")!=null)
+		{
+			if((request.getParameter("grad_didactic")!=null&&request.getParameter("grad_didactic")!="")||(request.getParameter("dep_cautare")!=null&&request.getParameter("dep_cautare")!="")){
+				System.out.println("Cautarea se face dupa filtrul: "+request.getParameter("grad_didactic")+" "+request.getParameter("dep_cautare"));
+				profesorFiltru=PrelucrariDB.returnProfesor(request.getParameter("grad_didactic"), request.getParameter("dep_cautare"));
+				if(!profesorFiltru.isEmpty())
+					{	
+						request.setAttribute("listaRezultatFiltrat", profesorFiltru);
+						System.out.println("Lista Filtru: "+profesorFiltru);
+					}
+				else
+					request.setAttribute("incomplet", "Nu exista profesori care sa corespunda criterilor de selectie");
+			}
+			else
+				request.setAttribute("incomplet", "Imposibil de aplicat filtrul!");
+			request.getRequestDispatcher("profesori.jsp").forward(request,response);
+		}
 	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

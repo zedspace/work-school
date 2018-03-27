@@ -38,12 +38,14 @@ public class DisciplinaServlet extends HttpServlet {
 		if(request.getParameter("cauta")!=null){
 			listaDiscipline=PrelucrariDB.returnDiscipline(request.getParameter("tipDisciplina"));
 			request.setAttribute("listaDiscipline", listaDiscipline);
+			if(listaDiscipline.isEmpty())
+				request.setAttribute("notFound", "Nu exista discipline care sa corespunda criteriilor de cautare!");
 		}
-		if(request.getParameter("cauta")==null)
-		{
-			listaDiscipline=PrelucrariDB.returnDiscipline();
-			request.setAttribute("listaDiscipline", listaDiscipline);
-		}
+//		if(request.getParameter("cauta")==null)
+//		{
+//			listaDiscipline=PrelucrariDB.returnDiscipline();
+//			request.setAttribute("listaDiscipline", listaDiscipline);
+//		}
 		request.getRequestDispatcher("discipline.jsp").forward(request,response);
 	}
 
