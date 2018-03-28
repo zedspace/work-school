@@ -37,22 +37,49 @@
     		<td><button type="submit" name="vizualizare" id="vizualizare" style="font-size:20px;">Vezi toate disciplinele</button></td>
     	</tr>
     	</table>
-    	<%	List<Disciplina> listaCompletaDisc=new ArrayList<Disciplina>();
-    		if(request.getAttribute("listaCompletaDisc")!=null)
-    			{
-    			listaCompletaDisc=(ArrayList<Disciplina>)request.getAttribute("listaCompletaDisc"); 
-    	%> 
-    	<table>
-    	<tr>
-    		<td style="font-size:20px;"><b>Denumire Disciplina</b></td>
-    		<td style="font-size:20px;"><b>Tip disciplina</b></td>
-    	</tr>
-    	<tr>
-    	<%for(Disciplina disciplina: listaCompletaDisc){ %>
- 			<td><input type="text" name="denumire_disciplina" id="denumire_disciplina" value="<%=disciplina.getDenumire_disciplina() %>" disabled size="30" style="font-size:20px;"/></td>
- 			<td><input type="text" name="tip_disciplina" id="tip_disciplina" value="<%=disciplina.getTip_disciplina() %>" disabled size="10" style="font-size:20px;"/></td>
-    	</tr>
-    	<%}};%>
+    	<%List<Preda>listaPredare=(ArrayList<Preda>)request.getAttribute("listaPredare"); %>
+    	<%if(listaPredare!=null){%>
+		<%List<AfisarePredare> predareProfesori=PrelucrariDB.afisarePredare(listaPredare); %>
+		<table>
+		<tr>
+					<td style="font-size:20px;"><b>Disciplina</b></td>
+					<td style="font-size:20px;"><b>Tipul Disciplinei</b></td>
+					<td style="font-size:20px;"><b>Specializarea</b></td>
+					<td style="font-size:20px;"><b>Grad didactic</b></td>
+					<td style="font-size:20px;"><b>Nume</b></td>
+					<td style="font-size:20px;"><b>Prenume</b></td>					
+				</tr>
+		
+			<%for(AfisarePredare predareProfesor: predareProfesori){ %>
+				<tr>
+					<td><input type="text" value="<%=predareProfesor.getNumeDisciplina()%>" style="font-size:20px;" disabled size=30/></td>
+					<td><input type="text" value="<%=predareProfesor.getTipDisciplina()%>" style="font-size:20px;" disabled size=12/></td>
+					<td><input type="text" value="<%=predareProfesor.getSpecializare()%>" style="font-size:20px;" disabled size=20/></td>
+					<td><input type="text" value="<%=predareProfesor.getTitulatura()%>" style="font-size:20px;" disabled size=10/></td>
+					<td><input type="text" value="<%=predareProfesor.getNumeProfesor()%>" style="font-size:20px;" disabled size=20/></td>
+					<td><input type="text" value="<%=predareProfesor.getPrenumeProfesor()%>" style="font-size:20px;" disabled size=30/></td>				
+				</tr>
+			<%}%>
+		</table>	
+		<%}%>
+    	
+<%--     	<%	List<Disciplina> listaCompletaDisc=new ArrayList<Disciplina>(); --%>
+<!-- //     		if(request.getAttribute("listaCompletaDisc")!=null)
+//     			{
+//     			listaCompletaDisc=(ArrayList<Disciplina>)request.getAttribute("listaCompletaDisc");  -->
+<%--     	%>  --%>
+<!--     	<table> -->
+<!--     	<tr> -->
+<!--     		<td style="font-size:20px;"><b>Denumire Disciplina</b></td> -->
+<!--     		<td style="font-size:20px;"><b>Tip disciplina</b></td> -->
+<!--     	</tr> -->
+<!--     	<tr> -->
+<%--     	<%for(Disciplina disciplina: listaCompletaDisc){ %> --%>
+<%--  			<td><input type="text" name="denumire_disciplina" id="denumire_disciplina" value="<%=disciplina.getDenumire_disciplina() %>" disabled size="30" style="font-size:20px;"/></td> --%>
+<%--  			<td><input type="text" name="tip_disciplina" id="tip_disciplina" value="<%=disciplina.getTip_disciplina() %>" disabled size="10" style="font-size:20px;"/></td> --%>
+<!--     	</tr> -->
+<%--     	<%}};%> --%>
+<!--     	</table> -->
     	<table>
     	<tr>
     		<td style="font-size:20px;"><b>Selecteaza tipul disciplinei</b></td>
@@ -159,7 +186,7 @@
 			</table>
     	</div>
     </form>
-    </div></div>
+   
     
  <script>
  function showFunctionAdd() {
@@ -172,9 +199,7 @@
 	    	  disc = document.getElementById("curs").value;
 	    	  document.getElementById("tip").value=disc;
 	    	  document.getElementById("credite").disabled = false;
-	    }
-	    
-	    
+	    }   
 	}
  </script>
 </body>

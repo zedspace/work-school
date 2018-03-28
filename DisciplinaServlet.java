@@ -36,6 +36,9 @@ public class DisciplinaServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		List<Preda> listaPreda=PrelucrariDB.returnPreda();
+		if(request.getParameter("vizualizare")!=null)
+			request.setAttribute("listaPredare", listaPreda);
 		List<Disciplina> listaDiscipline=new ArrayList<Disciplina>();
 		List<Disciplina> listaCompletaDisc=new ArrayList<Disciplina>();
 		List<Disciplina> disciplinaPreda=new ArrayList<Disciplina>();

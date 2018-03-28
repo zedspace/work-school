@@ -1,12 +1,15 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import claseResurse.Departament;
 
 import database.PrelucrariDB;
 
@@ -31,13 +34,19 @@ public class UpdateServletDep extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+		Departament depExistent=null;
 		//prelucrari admin departamente
 		if(request.getParameter("denumire_dep") != null && request.getParameter("denumire_dep")!="")
 		{
-			PrelucrariDB.insertDepartament(request.getParameter("denumire_dep"));
-			System.out.println("S-a inserat departamentul "+request.getParameter("denumire_dep"));
-			request.getRequestDispatcher("departamente.jsp").forward(request,response);
+			depExistent=PrelucrariDB.returnDepartamente(request.getParameter("denumire_dep"));
+			if(depExistent!=null)
+				request.setAttribute("exista","Departamenul exista deja" );
+			else
+			{
+				PrelucrariDB.insertDepartament(request.getParameter("denumire_dep"));
+				System.out.println("S-a inserat departamentul "+request.getParameter("denumire_dep"));
+				request.getRequestDispatcher("departamente.jsp").forward(request,response);
+			}
 			
 		}
 		if(request.getParameter("sterge")!=null)

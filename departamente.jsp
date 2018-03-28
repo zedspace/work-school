@@ -25,7 +25,10 @@
     </div>
     <div class="continut" align="center">
     <h2>Departamente</h2>
-    <form name="form" method="post" action="UpdateServletDep">
+    <form name="form" method="post" action="UpdateServletDep" >
+    <%if(request.getAttribute("exista")!=null){ %>
+    <p style="font-size:20px;color:red;"><%=request.getAttribute("exista")%></p>
+    <%}%>
 <table id="departamente">
 <tr>
 			<td style="font-size:20px;"><b>Codul departamentului</b></td>

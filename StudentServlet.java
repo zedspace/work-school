@@ -53,8 +53,13 @@ public class StudentServlet extends HttpServlet {
 		if(request.getParameter("adaugaStud")!=null)
 		{
 			if(request.getParameter("cnp")!=null&&request.getParameter("nume_stud")!=null&&request.getParameter("prenume")!=null&&request.getParameter("formaFinantare")!=null){
-				PrelucrariDB.insertStudent(request.getParameter("cnp"), request.getParameter("nume_stud"), request.getParameter("prenume"), request.getParameter("formaFinantare"));
-				System.out.println("S-a inserat studentul");
+				if(PrelucrariDB.returnStudent(request.getParameter("cnp"))!=null)
+					request.setAttribute("exista", "Studentul exista deja in baza de date!");
+				else
+				{
+					PrelucrariDB.insertStudent(request.getParameter("cnp"), request.getParameter("nume_stud"), request.getParameter("prenume"), request.getParameter("formaFinantare"));
+					System.out.println("S-a inserat studentul");
+				}
 			}
 			else
 				request.setAttribute("incomplet", "Toate campurile sunt obligatorii");

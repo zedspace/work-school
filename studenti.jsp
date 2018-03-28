@@ -11,11 +11,6 @@
 <title>Administrator</title>
 </head>
 <body>
-<header>
-   <h1><img src="C:\eclipse\Workspace\sigla-feaa-2016.png" height="100" width="450"/></h1>
-</header>
-<nav>
-</nav>
 <div class="wrap">
     <div class="meniu"> 
     <a href="departamente.jsp">Departamente</a> 
@@ -28,99 +23,101 @@
     <a href="conturi.jsp">Conturi</a>
     <a href="PaginaPrincipala.jsp">Delogare</a>
     </div>
-    <div class="continut">
+    <div class="continut" align="center">
     <h2>Studenti</h2>
     <form name="form" action="StudentServlet">
+    <%if(request.getAttribute("notFound")!=null){%>
+    <p style="font-size:20px;color:red;"><%=request.getAttribute("notFound")%></p>
+    <%}%>
+    <%if(request.getAttribute("incomplet")!=null){%>
+    <p style="font-size:20px;color:red;"><%=request.getAttribute("incomplet")%></p>
+    <%}%>
+     <%if(request.getAttribute("exista")!=null){ %>
+    <p style="font-size:20px;color:red;"><%=request.getAttribute("exista")%></p>
+    <%}%>
     <table>
     	<tr>
-    		<td>Numar Matricol</td>
-    		<td>CNP</td>
-    		<td>Nume</td>
-    		<td>Prenume</td>
-    		<td>Forma de Finantare</td>
+    		<td style="font-size:20px;"><b>Numar Matricol</b></td>
+    		<td style="font-size:20px;"><b>CNP</b></td>
+    		<td style="font-size:20px;"><b>Nume</b></td>
+    		<td style="font-size:20px;"><b>Prenume</b></td>
+    		<td style="font-size:20px;"><b>Forma de Finantare</b></td>
     	</tr>
     	<tr>
     	<%List<Student> listaStudenti=PrelucrariDB.returnStudenti(); %>
     	<%for(Student student: listaStudenti){ %>
- 			<td><%=student.getNumar_matricol() %></td>
- 			<td><%=student.getCnp() %></td>   
- 			<td><%=student.getNume() %></td>
- 			<td><%=student.getPrenume() %></td>
- 			<td><%=student.getForma_finantare() %></td>
+ 			<td><input type="text" value="<%=student.getNumar_matricol() %>" style="font-size:20px;" disabled size=5/></td>
+ 			<td><input type="text" value="<%=student.getCnp() %>" style="font-size:20px;" disabled size=13/></td>   
+ 			<td><input type="text" value="<%=student.getNume() %>" style="font-size:20px;" disabled size=30/></td>
+ 			<td><input type="text" value="<%=student.getPrenume() %>" style="font-size:20px;" disabled size=30/></td>
+ 			<td><input type="text" value="<%=student.getForma_finantare() %>" style="font-size:20px;" disabled size=10/></td>
     	</tr>
     	<%}%>
+    	</table>
+    	<table align="left">
     	<tr>
-    	<td><button type="button" name="adaugaStudent" onclick="showFunctionAdd()">Adauga un student</button></td>
+    	<td><button type="button" name="adaugaStudent" onclick="showFunctionAdd()" style="font-size:20px;">Adauga un student</button></td>
     	</tr>
+    	</table>
+    	<br><br><br>
+    	  <div id="adaugareStudent" style="display: none;">
+    	<table align="left">
     	<tr>
-    	<td>Cauta un student</td>
-    	<td><input type="text" name="nume" id="nume"/></td>
-    	<td><button type="submit" name="cauta" value="cauta">Cauta</button></td>
-    	</tr>
-    </table>
-    <div id="adaugareStudent" style="display: none;">
-    <form name="adaugaForm" action="StudentServlet" method="post">
-    <table>
-    	<tr>
-    	<td>Adauga un nou student</td>
+    	<td style="font-size:20px;"><b>Adauga un nou student</b></td>
     	<td></td>
     	</tr>
     	<tr>
-    	<td>CNP</td>
-    	<td><input type="text" id="cnp" name="cnp" size="50" maxlength="13"/></td>
+    	<td style="font-size:20px;">CNP</td>
+    	<td><input type="text" id="cnp" name="cnp" size="50" maxlength="13" style="font-size:20px;"/></td>
     	</tr>
     	<tr>
-    	<td>Nume</td>
-    	<td><input type="text" id="nume_stud" name="nume_stud" size="50"/></td>
+    	<td style="font-size:20px;">Nume</td>
+    	<td><input type="text" id="nume_stud" name="nume_stud" size="50" style="font-size:20px;"/></td>
     	</tr>
     	<tr>
-    	<td>Prenume</td>
-    	<td><input type="text" id="prenume" name="prenume" size="50"/></td>
+    	<td style="font-size:20px;">Prenume</td>
+    	<td><input type="text" id="prenume" name="prenume" size="50" style="font-size:20px;"/></td>
     	</tr>
     	<tr>
-    	<td>Forma de finantare</td>
-    	<td><input type="radio" name="formaFinantare" id="formaFinantare" value="Buget"/>Buget<br>
-    	<input type="radio" name="formaFinantare" id="formaFinantare" value="Taxa"/>Taxa</td>
+    	<td style="font-size:20px;">Forma de finantare</td>
+    	<td><input type="radio" name="formaFinantare" id="formaFinantare" value="Buget"/><label style="font-size:20px;">Buget</label><br>
+    	<input type="radio" name="formaFinantare" id="formaFinantare" value="Taxa"/><label style="font-size:20px;">Taxa</label></td>
     	</tr>
     	<tr>
-    	<td><button type="Submit" id="adaugaStud" name="adaugaStud">Adauga Studentul</button></td>
+    		<td><button type="Submit" id="adaugaStud" name="adaugaStud" style="font-size:20px;">Adauga Studentul</button></td>
     	</tr>
-    	<tr><td><%if(request.getAttribute("incomplet")!=null){%>
-    <p><%=request.getAttribute("incomplet")%></p>
-    <%}%></td></tr>
     </table>
-    </form>
-    	</div>
-    </form>
+  	</div>
+    	<table align="left">
+    	<tr>
+    	<td style="font-size:20px;"><b>Cauta un student</b></td>
+    	<td><input type="text" name="nume" id="nume" style="font-size:20px;"/></td>
+    	<td><button type="submit" name="cauta" value="cauta" style="font-size:20px;">Cauta</button></td>
+    	</tr>
+    </table>
+  	<br><br><br><br>
     <%List<Student> listaRezultat=(ArrayList<Student>)request.getAttribute("listaRezultat");%>
-    <%if(listaRezultat!=null) {
-    	
-    %>
-    <form>
+    <%if(listaRezultat!=null) { %>
     <table>
     	<tr>
-    		<td>Numar Matricol</td>
-    		<td>CNP</td>
-    		<td>Nume</td>
-    		<td>Prenume</td>
-    		<td>Forma de Finantare</td>
+    		<td style="font-size:20px;">Numar Matricol</td>
+    		<td style="font-size:20px;">CNP</td>
+    		<td style="font-size:20px;">Nume</td>
+    		<td style="font-size:20px;">Prenume</td>
+    		<td style="font-size:20px;">Forma de Finantare</td>
     	</tr>
     	<tr>
     	<%for(Student student: listaRezultat){ %>
-			<td><%=student.getNumar_matricol() %></td>
-			<td><%=student.getCnp() %></td>   
-			<td><%=student.getNume() %></td>
-			<td><%=student.getPrenume() %></td>
-			<td><%=student.getForma_finantare() %></td>
+			<td><input type="text" value="<%=student.getNumar_matricol() %>" style="font-size:20px;" disabled size=5/></td>
+ 			<td><input type="text" value="<%=student.getCnp() %>" style="font-size:20px;" disabled size=13/></td>   
+ 			<td><input type="text" value="<%=student.getNume() %>" style="font-size:20px;" disabled size=30/></td>
+ 			<td><input type="text" value="<%=student.getPrenume() %>" style="font-size:20px;" disabled size=30/></td>
+ 			<td><input type="text" value="<%=student.getForma_finantare() %>" style="font-size:20px;" disabled size=10/></td>
 	</tr>
 	<%}%>
 	</table>
-    </form>
-    <%}%>
-    <%if(request.getAttribute("notFound")!=null){%>
-    <p><%=request.getAttribute("notFound")%></p>
-    <%}%>
-    
+    <%}%> 
+    </form> 
 </div>  
 </div>
 <script>

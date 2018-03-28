@@ -108,6 +108,33 @@ public class PrelucrariDB {
 			return specializare;		
 		}
 
+		public static Specializare returnSpecializare(String denumire_specializare,String forma_invatamant){	
+			Connection con=ConexiuneDB.conectare();	
+			Specializare specializare=new Specializare();
+			try{
+				if(con!=null){
+				PreparedStatement stmt= con.prepareStatement("select * from specializare where denumire_specializare=? and forma_invatamant=?");
+				stmt.setString(1, denumire_specializare);
+				stmt.setString(2, forma_invatamant);
+				ResultSet rs=stmt.executeQuery();
+				while(rs.next())  
+				{	
+					
+					specializare.setCod_specializare(Integer.parseInt(rs.getString("cod_specializare")));
+					specializare.setDenumire_specializare(rs.getString("denumire_specializare"));
+					specializare.setForma_invatamant(rs.getString("forma_invatamant"));	
+					
+				}
+				ConexiuneDB.closeResources(con, rs, stmt);
+				}	
+				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}	
+			return specializare;		
+		}
 	
 	//returneaza lista anilor universitari
 	public static List<AnUniversitar> returnAni(){
@@ -577,6 +604,31 @@ public class PrelucrariDB {
 					return departament;	
 				}
 				
+				public static Departament returnDepartamente(String denumire_dep)
+				{
+					Departament departament=new Departament();
+					Connection con=ConexiuneDB.conectare();		
+					try{
+						if(con!=null){
+						PreparedStatement stmt= con.prepareStatement("select * from departament where denumire_departament=?");
+						stmt.setString(1, denumire_dep);
+						ResultSet rs=stmt.executeQuery();
+						while(rs.next())  
+						{	
+							departament.setCod_departament(Integer.parseInt(rs.getString("cod_departament")));
+							departament.setDenumire_departament(rs.getString("denumire_departament"));	
+						}
+						ConexiuneDB.closeResources(con, rs, stmt);
+						}	
+						
+					}
+					catch(SQLException e)
+					{
+						e.printStackTrace();
+					}	
+					return departament;	
+				}
+				
 				public static List<Student> returnStudenti()
 				{
 					List<Student> listaStudenti=new ArrayList<Student>();
@@ -604,6 +656,35 @@ public class PrelucrariDB {
 						e.printStackTrace();
 					}	
 					return listaStudenti;
+				}
+				
+				public static Student returnStudent(String cnp)
+				{
+					Student student=new Student();
+					Connection con=ConexiuneDB.conectare();		
+					try{
+						if(con!=null){
+						PreparedStatement stmt= con.prepareStatement("select * from student where cnp=?");
+						stmt.setString(1, cnp);
+						ResultSet rs=stmt.executeQuery();
+						while(rs.next())  
+						{					
+							student.setNumar_matricol(Integer.parseInt(rs.getString("numar_matricol")));	
+							student.setCnp(rs.getString("cnp"));
+							student.setNume(rs.getString("nume"));
+							student.setPrenume(rs.getString("prenume"));
+							student.setForma_finantare(rs.getString("forma_finantare"));
+							
+						}
+						ConexiuneDB.closeResources(con, rs, stmt);
+						}	
+						
+					}
+					catch(SQLException e)
+					{
+						e.printStackTrace();
+					}	
+					return student;
 				}
 				
 				public static List<Cont> returnConturi(){
@@ -634,6 +715,35 @@ public class PrelucrariDB {
 					return listaConturi;
 				}
 				
+			public static Cont returnCont(int nr_matricol,int marca){
+					
+					Cont cont=new Cont();
+					Connection con=ConexiuneDB.conectare();		
+					try{
+						if(con!=null){
+						PreparedStatement stmt= con.prepareStatement("select * from cont where student_numar_matricol=? or profesor_marca=?");
+						stmt.setInt(1,nr_matricol);
+						stmt.setInt(2,marca);
+						ResultSet rs=stmt.executeQuery();
+						while(rs.next())  
+						{	
+					
+							cont.setUtilizator(rs.getString("nume_utilizator"));
+							cont.setParola(rs.getString("parola"));
+							cont.setMarca(Integer.parseInt(rs.getString("profesor_marca")));
+							cont.setInformatii(rs.getString("alte_infromatii"));
+							cont.setNumar_matricol(Integer.parseInt(rs.getString("student_numar_matricol")));
+						
+						}
+						ConexiuneDB.closeResources(con, rs, stmt);
+						}
+					}
+					catch(SQLException e)
+					{
+						e.printStackTrace();
+					}	
+					return cont;
+				}
 				//prelucrari departamente
 				public static void insertDepartament(String denumire_deparatment)
 				{
@@ -772,8 +882,9 @@ public class PrelucrariDB {
 				Connection con=ConexiuneDB.conectare();		
 				try{
 					if(con!=null){
-					PreparedStatement stmt= con.prepareStatement("select * from student where nume=?");
-					stmt.setString(1,nume);
+					PreparedStatement stmt= con.prepareStatement("select * from student where nume like ? or prenume like ?");
+					stmt.setString(1,"%"+nume+"%");
+					stmt.setString(2,"%"+nume+"%");
 					ResultSet rs=stmt.executeQuery();
 					while(rs.next())  
 					{	
@@ -1066,12 +1177,13 @@ public class PrelucrariDB {
 				Connection con=ConexiuneDB.conectare();		
 				try{
 					if(con!=null){
-					PreparedStatement stmt= con.prepareStatement("insert into cont(nume_utilizator,parola,alte_informatii,student_numar_matricol,profesor_marca) values (?,?,?,?,?)");
+					PreparedStatement stmt= con.prepareStatement("insert into cont(nume_utilizator,parola,alte_infromatii,student_numar_matricol,profesor_marca) values (?,?,?,?,?)");
 					stmt.setString(1,utilizator);
 					stmt.setString(2,parola);
 					stmt.setString(3,informatii);
 					stmt.setString(4,matricol);
 					stmt.setString(5,marca);
+					System.out.println(stmt);
 					stmt.executeUpdate();
 					con.close();
 					}				

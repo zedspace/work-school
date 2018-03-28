@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import claseResurse.Specializare;
 import database.PrelucrariDB;
 
 /**
@@ -30,11 +31,18 @@ public class UpdateServletSpec extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		Specializare specExistenta=null;
 		//prelucrari admin specializari
-				if(request.getParameter("denumire_spec") != null && request.getParameter("denumire_spec")!="")
+				if(request.getParameter("denumire_spec") != null && request.getParameter("denumire_spec")!="" && request.getParameter("f_invatamant") != null)
 				{
-					PrelucrariDB.insertSpecializare(request.getParameter("denumire_spec"),request.getParameter("f_invatamant"));
-					System.out.println("S-a inserat specializarea "+request.getParameter("denumire_spec"));				
+					specExistenta=PrelucrariDB.returnSpecializare(request.getParameter("denumire_spec"), request.getParameter("f_invatamant"));
+					if(specExistenta!=null)
+						request.setAttribute("exista", "Specializarea deja exista!");
+					else
+					{
+						PrelucrariDB.insertSpecializare(request.getParameter("denumire_spec"),request.getParameter("f_invatamant"));
+						System.out.println("S-a inserat specializarea "+request.getParameter("denumire_spec"));		
+					}
 				}
 				if(request.getParameter("sterge")!=null)
 				{	

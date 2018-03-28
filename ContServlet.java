@@ -30,19 +30,37 @@ public class ContServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		int profesor;
+		int student;
 		if(request.getParameter("adaugaCont")!=null)
 		{
-			if(request.getParameter("utilizator")!=null&&request.getParameter("parola")!=null&&request.getParameter("informatii")!=null){
-				if(request.getParameter("tipCont")=="profesor")
-				{
-					PrelucrariDB.insertCont(request.getParameter("utilizator"), request.getParameter("parola"), request.getParameter("informatii"), "0", request.getParameter("profesor"));
-					System.out.println("S-a creat cont pentru profesorul "+request.getParameter("profesor"));
-				}
+			System.out.println("Se fac prelucrari pentru categoria: "+request.getParameter("tipCont"));
+			if(request.getParameter("utilizator")!=null&&request.getParameter("parola")!=null&&request.getParameter("utilizator")!=""&&request.getParameter("parola")!=""){
+				if(request.getParameter("profesor")==null)
+					profesor=0;
 				else
-				{	
-					PrelucrariDB.insertCont(request.getParameter("utilizator"), request.getParameter("parola"), request.getParameter("informatii"),request.getParameter("student"), "0");
-					System.out.println("S-a creat cont pentru studentul "+request.getParameter("student"));
-				}	
+					profesor=Integer.parseInt(request.getParameter("profesor"));
+				if(request.getParameter("student")==null)
+					student=0;
+				else
+					student=Integer.parseInt(request.getParameter("student"));
+				if(PrelucrariDB.returnCont(profesor,student)!=null)
+					{
+						request.setAttribute("incomplet", "Utilizatorul are deja un cont creat");
+						System.out.println("Utilizatorul are deja un cont creat");
+					}
+				else{
+					if(request.getParameter("tipCont").equals("profesor"))
+					{
+						PrelucrariDB.insertCont(request.getParameter("utilizator"), request.getParameter("parola"), request.getParameter("informatii"), "0", request.getParameter("profesor"));
+						System.out.println("S-a creat cont pentru profesorul "+request.getParameter("profesor"));
+					}
+					if(request.getParameter("tipCont").equals("student"))
+					{	
+						PrelucrariDB.insertCont(request.getParameter("utilizator"), request.getParameter("parola"), request.getParameter("informatii"),request.getParameter("student"), "0");
+						System.out.println("S-a creat cont pentru studentul "+request.getParameter("student"));
+					}
+				}
 			}
 			else
 				request.setAttribute("incomplet", "Toate campurile sunt obligatorii");

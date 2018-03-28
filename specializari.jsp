@@ -26,6 +26,9 @@
     <div class="continut" align="center">
     <h2>Specializari</h2>
     <form id="form" name="form" method="post" action="UpdateServletSpec">
+     <%if(request.getAttribute("exista")!=null){ %>
+    <p style="font-size:20px;color:red;"><%=request.getAttribute("exista")%></p>
+    <%}%>
     <table>
     	<tr>
 <!--     		<td>Id Specializare</td> -->
