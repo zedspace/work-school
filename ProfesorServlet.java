@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import claseResurse.Profesor;
-import claseResurse.Student;
 import database.PrelucrariDB;
-import sun.dc.pr.PRError;
 
 /**
  * Servlet implementation class ProfesorServlet

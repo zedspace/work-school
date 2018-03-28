@@ -34,6 +34,27 @@
     		<td style="font-size:20px;"><b>Cauta disciplinele</b></td>
     	</tr>
     	<tr>
+    		<td><button type="submit" name="vizualizare" id="vizualizare" style="font-size:20px;">Vezi toate disciplinele</button></td>
+    	</tr>
+    	</table>
+    	<%	List<Disciplina> listaCompletaDisc=new ArrayList<Disciplina>();
+    		if(request.getAttribute("listaCompletaDisc")!=null)
+    			{
+    			listaCompletaDisc=(ArrayList<Disciplina>)request.getAttribute("listaCompletaDisc"); 
+    	%> 
+    	<table>
+    	<tr>
+    		<td style="font-size:20px;"><b>Denumire Disciplina</b></td>
+    		<td style="font-size:20px;"><b>Tip disciplina</b></td>
+    	</tr>
+    	<tr>
+    	<%for(Disciplina disciplina: listaCompletaDisc){ %>
+ 			<td><input type="text" name="denumire_disciplina" id="denumire_disciplina" value="<%=disciplina.getDenumire_disciplina() %>" disabled size="30" style="font-size:20px;"/></td>
+ 			<td><input type="text" name="tip_disciplina" id="tip_disciplina" value="<%=disciplina.getTip_disciplina() %>" disabled size="10" style="font-size:20px;"/></td>
+    	</tr>
+    	<%}};%>
+    	<table>
+    	<tr>
     		<td style="font-size:20px;"><b>Selecteaza tipul disciplinei</b></td>
     		<td><input type="radio" name="tipDisciplina" id="tipDisciplina" value="curs" /><label style="font-size:20px;">Curs</label><br>
     			<input type="radio" name="tipDisciplina" id="tipDisciplina" value="seminar" /><label style="font-size:20px;">Seminar</label><br>
@@ -65,7 +86,7 @@
     	</tr>
     	<%}};%>
     </table>
-    <table style="border:1px gray solid;" width="90%">
+    <table id="adaugareDisc" style="border:1px gray solid;" width="100%" align="center">
     	<tr>
     		<td style="font-size:20px;"><b>Adauga o disciplina pentru anul in curs</b></td>
     		<td><input type="text" name="an_univ" id="an_univ" value="2017-2018" disabled size="30" style="font-size:20px;"/></td>
@@ -103,10 +124,10 @@
     	</tr>
     	<tr>
     		<td style="font-size:20px;">Selecteaza tipul disciplinei</td>
-    		<td><input type="radio" name="tip_disc" id="tip_disc" value="curs" /><label style="font-size:20px;">Curs</label><br>
-    			<input type="radio" name="tip_disc" id="tip_disc" value="seminar" /><label style="font-size:20px;">Seminar</label><br>
-    			<input type="radio" name="tip_disc" id="tip_disc" value="laborator"/><label style="font-size:20px;">Laborator</label><br>
-    			<input type="radio" name="tip_disc" id="tip_disc" value="proiect"/><label style="font-size:20px;">Proiect</label><br>
+    		<td><input type="radio" name="tip_disc" id="curs" value="curs" /><label style="font-size:20px;">Curs</label><br>
+    			<input type="radio" name="tip_disc" id="seminar" value="seminar" /><label style="font-size:20px;">Seminar</label><br>
+    			<input type="radio" name="tip_disc" id="laborator" value="laborator"/><label style="font-size:20px;">Laborator</label><br>
+    			<input type="radio" name="tip_disc" id="proiect" value="proiect"/><label style="font-size:20px;">Proiect</label><br>
     		</td> 
     	</tr>
     	<tr>
@@ -114,10 +135,14 @@
     	</tr>
     	</table >
     	<div id="adaugareDisciplina" style="display: none;">
-    	<table align="center" style="border:1px gray solid;" width="90%">
+    	<table align="center" style="border:1px gray solid;" width="100%">
     		<tr>
     			<td colspan="2" style="font-size:20px;" align="center"><b>Finalizeaza adaugarea disciplinei</b></td></tr>
-    		<tr>
+			<tr>
+				<td style="font-size:20px;">Introdu numarul de credite</td>
+				<td style="font-size:20px;"><input type="text" name="credite" id="credite" size=23 style="font-size:20px;" placeholder="Doar pentru CURS" disabled/></td>
+			</tr>
+				<tr>
     			<td style="font-size:20px;">Selecteaza titularul disciplinei</td>
     			<td> <%List<Profesor> listaprofesori= PrelucrariDB.returnProfesor(); %>
 					<select name="profesor" id="profesor" style="font-size:20px;">
@@ -129,11 +154,8 @@
 					</select>
 				</td>
 			</tr>
-			<tr>
-				<td style="font-size:20px;">Introdu numarul de credite</td>
-				<td style="font-size:20px;"><input type="text" name="credite" id="credite" size=20 style="font-size:20px;" disabled/></td>
-			</tr>
 			<tr><td colspan="2"><input type="hidden" name="tip" id="tip"/></td></tr>
+			<tr><td colspan="2" align="center"><button type="submit" name="adaugaFinal" id="adaugaFinal" style="font-size:20px;">Finalizeaza adaugarea disciplinei</button></td></tr>
 			</table>
     	</div>
     </form>
@@ -142,12 +164,16 @@
  <script>
  function showFunctionAdd() {
 	    var x = document.getElementById("adaugareDisciplina");
+// 	    document.getElementById("adaugareDisc").disabled = true;
 	    if (x.style.display === "none") {
 	        x.style.display = "block";
 	    }
-	    document.getElementById("tip").value=document.getElementById("tip_disc").value;
-	    if(document.getElementById("tip_disc").value=="curs")
-	    	document.getElementById("credite").disabled = false;	
+	    if (document.getElementById("curs").checked) {
+	    	  disc = document.getElementById("curs").value;
+	    	  document.getElementById("tip").value=disc;
+	    	  document.getElementById("credite").disabled = false;
+	    }
+	    
 	    
 	}
  </script>

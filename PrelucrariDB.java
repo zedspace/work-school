@@ -236,6 +236,26 @@ public class PrelucrariDB {
 				stmt.setInt(2,disciplina);
 				stmt.setInt(3,an_universitar);
 				stmt.setInt(4,grupa);
+				System.out.println(stmt);
+				stmt.executeUpdate(); 
+				con.close();
+				}				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}	
+		}
+		
+		public static void updatePreda(int numar_credite,int id_preda)
+		{
+			Connection con=ConexiuneDB.conectare();		
+			try{
+				if(con!=null){
+				PreparedStatement stmt= con.prepareStatement("update preda set numar_credite=? where id_preda=?");
+				stmt.setInt(1,numar_credite);
+				stmt.setInt(2,id_preda);
+				System.out.println(stmt);
 				stmt.executeUpdate(); 
 				con.close();
 				}				
@@ -252,6 +272,37 @@ public class PrelucrariDB {
 			try{
 				if(con!=null){
 				PreparedStatement stmt= con.prepareStatement("select * from preda");
+				ResultSet rs=stmt.executeQuery(); 
+				while(rs.next())  
+				{	
+					Preda predare= new Preda();
+					predare.setId_preda(rs.getInt("id_preda"));
+					predare.setProfesor_marca(rs.getInt("profesor_marca"));
+					predare.setDisciplina_id_disciplina(rs.getInt("disciplina_id_disciplina"));
+					predare.setAn_universitar_id_an_universitar(rs.getInt("an_universitar_id_an_universitar"));
+					predare.setGrupa_id_grupa(rs.getInt("grupa_id_grupa"));
+					listaPredare.add(predare);					
+				}
+				ConexiuneDB.closeResources(con, rs, stmt);
+				}				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}	
+			return listaPredare;		
+		}
+		
+		public static List<Preda> returnPreda(int marca,int id_disciplina,int id_grupa,int an_univ){
+			List<Preda> listaPredare=new ArrayList<Preda>();
+			Connection con=ConexiuneDB.conectare();		
+			try{
+				if(con!=null){
+				PreparedStatement stmt= con.prepareStatement("select * from preda where profesor_marca=? and disciplina_id_disciplina=? and an_universitar_id_an_universitar=? and grupa_id_grupa=?");
+				stmt.setInt(1,marca);
+				stmt.setInt(2,id_disciplina);
+				stmt.setInt(3,an_univ);
+				stmt.setInt(4,id_grupa);
 				ResultSet rs=stmt.executeQuery(); 
 				while(rs.next())  
 				{	
@@ -837,6 +888,57 @@ public class PrelucrariDB {
 				return listaDiscipline;		
 			}
 			
+			public static List<Disciplina> returnDiscipline(String denumire_disciplina,String tip_disciplina){
+				List<Disciplina> listaDiscipline=new ArrayList<Disciplina>();
+				Connection con=ConexiuneDB.conectare();		
+				try{
+					if(con!=null){
+					PreparedStatement stmt= con.prepareStatement("select * from disciplina where denumire_disciplina=? and tip_disciplina=?");
+					stmt.setString(1, denumire_disciplina);
+					stmt.setString(2, tip_disciplina);
+					System.out.println(stmt);
+					ResultSet rs=stmt.executeQuery(); 
+					while(rs.next())  
+					{	
+						Disciplina disciplina= new Disciplina();
+						disciplina.setId_disciplina(rs.getInt("id_disciplina"));
+						disciplina.setCod_disciplina(rs.getInt("cod_disciplina"));
+						disciplina.setDenumire_disciplina(rs.getString("denumire_disciplina"));
+						disciplina.setTip_disciplina(rs.getString("tip_disciplina"));
+						listaDiscipline.add(disciplina);					
+					}
+					ConexiuneDB.closeResources(con, rs, stmt);
+					}				
+				}
+				catch(SQLException e)
+				{
+					e.printStackTrace();
+				}	
+				return listaDiscipline;		
+			}
+			
+			public static void insertDisciplina(String denumire,String tip_disciplina,String cod_diciplina)
+			{
+				Connection con=ConexiuneDB.conectare();		
+				try{
+					if(con!=null){
+					PreparedStatement stmt= con.prepareStatement("insert into disciplina (denumire_disciplina,tip_disciplina,cod_disciplina) values (?,?,?)");
+					stmt.setString(1,denumire);
+					stmt.setString(2,tip_disciplina);
+					stmt.setString(3,cod_diciplina);
+					System.out.println(stmt);
+					stmt.executeUpdate();
+					con.close();
+					}				
+				}
+				catch(SQLException e)
+				{
+					e.printStackTrace();
+					System.out.println("Profesorul nu a putut fi inserat");
+				}
+			}
+			
+			
 			public static List<Profesor> returnProfesor(String nume){
 				List<Profesor> listaProfesori=new ArrayList<Profesor>();
 				Connection con=ConexiuneDB.conectare();
@@ -983,7 +1085,3 @@ public class PrelucrariDB {
 			
 			
 }
-	
-	
-
-
