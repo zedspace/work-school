@@ -1083,6 +1083,38 @@ public class PrelucrariDB {
 				return listaProfesori;		
 			}
 			
+			public static List<Profesor> returnProfesor(int cod_departament){
+				List<Profesor> listaProfesori=new ArrayList<Profesor>();
+				Connection con=ConexiuneDB.conectare();
+				
+				try{
+					if(con!=null){
+					PreparedStatement stmt= con.prepareStatement("select * from profesor where departament_cod_departament=?");
+					stmt.setInt(1, cod_departament);
+					System.out.println(stmt.toString());
+					ResultSet rs=stmt.executeQuery(); 
+					while(rs.next())  
+					{	
+						Profesor profesor=new Profesor();
+						profesor.setMarca(Integer.parseInt(rs.getString("marca")));
+						profesor.setNume(rs.getString("nume"));
+						profesor.setPrenume(rs.getString("prenume"));
+						profesor.setTitulatura(rs.getString("titulatura"));
+						profesor.setCod_departament(Integer.parseInt(rs.getString("departament_cod_departament")));
+						profesor.setNume_utilizator(rs.getString("cont_nume_utilizator"));
+						listaProfesori.add(profesor);			
+					}
+					ConexiuneDB.closeResources(con, rs, stmt);
+					}	
+					
+				}
+				catch(SQLException e)
+				{
+					e.printStackTrace();
+				}	
+				return listaProfesori;		
+			}
+			
 			public static List<Profesor> returnProfesor(String titulatura,String departament){
 				List<Profesor> listaProfesori=new ArrayList<Profesor>();
 				Connection con=ConexiuneDB.conectare();

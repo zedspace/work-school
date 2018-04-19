@@ -9,8 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import claseResurse.Departament;
 
+import claseResurse.Departament;
+import claseResurse.Profesor;
 import database.PrelucrariDB;
 
 /**
@@ -35,6 +36,9 @@ public class UpdateServletDep extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		Departament depExistent=null;
+		List<Profesor> listaProfesori=new ArrayList<Profesor>();
+		String denumire_departament=null;
+		String cod_departament;
 		//prelucrari admin departamente
 		if(request.getParameter("denumire_dep") != null && request.getParameter("denumire_dep")!="")
 		{
@@ -59,6 +63,22 @@ public class UpdateServletDep extends HttpServlet {
 		{	
 			PrelucrariDB.actualizeazaDepartament(request.getParameter("cod_dept"), request.getParameter("denumire_departament"));
 			System.out.println("S-a actualizat departamentul "+request.getParameter("cod_dept"));
+			request.getRequestDispatcher("departamente.jsp").forward(request,response);
+		}
+		if(request.getParameter("vezi")!=null)
+		{	
+			if(request.getParameter("departament")!=null&&request.getParameter("departament")!="")
+			{	 
+				cod_departament=request.getParameter("departament");
+				System.out.println("S-au afisat profesorii din departamentul cu codul: "+cod_departament);
+				listaProfesori=PrelucrariDB.returnProfesor(Integer.parseInt(cod_departament));
+				denumire_departament=PrelucrariDB.returnDepartamente(Integer.parseInt(cod_departament)).getDenumire_departament();
+				request.setAttribute("departament", denumire_departament);
+				request.setAttribute("listaProfesori", listaProfesori);
+			}
+			else
+				request.setAttribute("inexistent", "Nu a fost selectat niciun departament!");
+			System.out.println("S-au afisat profesorii din departamentul: "+denumire_departament);
 			request.getRequestDispatcher("departamente.jsp").forward(request,response);
 		}
 		
