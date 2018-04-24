@@ -32,16 +32,22 @@ public class ConnectionServlet extends HttpServlet {
 		String parola=request.getParameter("parola");
 		//verificare user si parola introduse
 		if(Securitate.tipUser(nume,parola).equals("a"))
-			request.getRequestDispatcher("admin.jsp").forward(request,response);
+			request.getRequestDispatcher("administrator_template.jsp").forward(request,response);
 		else 
-			if(Securitate.tipUser(nume,parola).equals("p"))
+			if(Securitate.tipUser(nume,parola).equals("p")){
+				request.getSession().putValue("idUser", Securitate.returnId(nume, parola));
 				request.getRequestDispatcher("profesor.jsp").forward(request,response);
+			}
 			else
-				if(Securitate.tipUser(nume,parola).equals("s"))
+				if(Securitate.tipUser(nume,parola).equals("s")){
+					request.getSession().putValue("idUser", Securitate.returnId(nume, parola));
 					request.getRequestDispatcher("student.jsp").forward(request,response);
+				}
 				else
-					request.getRequestDispatcher("PaginaPrincipala.jsp").forward(request,response);
-					
+					{
+						request.setAttribute("invalid", "Userul incorect/Parola incorecta");
+						request.getRequestDispatcher("PaginaPrincipala.jsp").forward(request,response);
+					}					
 		System.out.println("Utilizatorul a introdus: "+nume+" "+parola);
 	}
 

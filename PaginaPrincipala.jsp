@@ -5,7 +5,41 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" type="text/css" href="css\firstPageStyle.css">
+<style>
+body {
+	height: 100%; 
+}
+header{
+    padding: 1em;
+    color: white;
+    background-color: white;
+    clear: left;
+    text-align: left;
+    border-bottom : 3px solid #3973ac;
+}
+.wrap {
+    width: 100%;
+    height: 100%;
+}
+table {
+    
+    width: 40%;
+    height : 60%;
+    margin:2em auto;
+}
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+    color : #2d5986;
+    
+}
+p {
+	color : #2d5986;
+	text-align: center;
+	font-size: 28px;
+	font-weight: bold;
+}
+</style>
 <script>
 function validare(){
          var nume = document.getElementById("nume").value;
@@ -23,12 +57,15 @@ function validare(){
 </head>
 <body>    
 <header>
-   <h1><img src="C:\eclipse\Workspace\sigla-feaa-2016.png" height="100" width="450"/></h1>
+   <h1><img src="C:\Users\gbs04610\Documents\Facultate\sigla-feaa-2016.png" height="100" width="450"/></h1>
 </header>
 <p>Catalogul virtual al studentului</p>
 <p>Acceseaza platforma!</p>
+  <%if(request.getAttribute("invalid")!=null){ %>
+    <p style="font-size:20px;color:red;"><%=request.getAttribute("invalid")%></p>
+    <%}%>
 <div class="wrap">  
-    <form method="post" name="from" onsubmit="return validare();" action="ConnectionServlet">
+    <form name="from" method="post" action="ConnectionServlet" onsubmit="return validare();" >
     	<table border="5" align="center" bordercolor="#3973ac">
     	<tr>
 		<th>Utilizator</th>

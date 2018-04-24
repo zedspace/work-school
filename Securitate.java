@@ -63,4 +63,54 @@ public class Securitate {
 		}
 		return tipUtilizator;
 	}
+	
+	public static int returnId(String nume,String parola)
+	{
+		Connection con=ConexiuneDB.conectare();
+		int id=0;
+		if(tipUser(nume, parola).equals("s")){
+			try{
+				if(con!=null){
+				PreparedStatement stmt= con.prepareStatement("select student_numar_matricol from cont where nume_utilizator=? and parola=?");
+				stmt.setString(1,nume);
+				stmt.setString(2,parola);
+				ResultSet rs=stmt.executeQuery(); 
+				while(rs.next())  
+				{	
+					if(rs.getInt("student_numar_matricol") != 0)
+						id=rs.getInt("student_numar_matricol");	
+				}
+				ConexiuneDB.closeResources(con, rs, stmt);
+				}	
+				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}	
+		}
+		else
+			if(tipUser(nume, parola).equals("p")){
+				try{
+					if(con!=null){
+					PreparedStatement stmt= con.prepareStatement("select profesor_marca from cont where nume_utilizator=? and parola=?");
+					stmt.setString(1,nume);
+					stmt.setString(2,parola);
+					ResultSet rs=stmt.executeQuery(); 
+					while(rs.next())  
+					{	
+						if(rs.getInt("profesor_marca") != 0)
+							id=rs.getInt("profesor_marca");	
+					}
+					ConexiuneDB.closeResources(con, rs, stmt);
+					}	
+					
+				}
+				catch(SQLException e)
+				{
+					e.printStackTrace();
+				}	
+			}
+		return id;
+	}
 }

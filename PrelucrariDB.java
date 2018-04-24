@@ -320,6 +320,34 @@ public class PrelucrariDB {
 			return listaPredare;		
 		}
 		
+		public static List<Preda> returnPreda(int marca){
+			List<Preda> listaPredare=new ArrayList<Preda>();
+			Connection con=ConexiuneDB.conectare();		
+			try{
+				if(con!=null){
+				PreparedStatement stmt= con.prepareStatement("select * from preda where profesor_marca=?");
+				stmt.setInt(1, marca);
+				ResultSet rs=stmt.executeQuery(); 
+				while(rs.next())  
+				{	
+					Preda predare= new Preda();
+					predare.setId_preda(rs.getInt("id_preda"));
+					predare.setProfesor_marca(rs.getInt("profesor_marca"));
+					predare.setDisciplina_id_disciplina(rs.getInt("disciplina_id_disciplina"));
+					predare.setAn_universitar_id_an_universitar(rs.getInt("an_universitar_id_an_universitar"));
+					predare.setGrupa_id_grupa(rs.getInt("grupa_id_grupa"));
+					listaPredare.add(predare);					
+				}
+				ConexiuneDB.closeResources(con, rs, stmt);
+				}				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}	
+			return listaPredare;		
+		}
+		
 		public static List<Preda> returnPreda(int marca,int id_disciplina,int id_grupa,int an_univ){
 			List<Preda> listaPredare=new ArrayList<Preda>();
 			Connection con=ConexiuneDB.conectare();		
@@ -420,6 +448,54 @@ public class PrelucrariDB {
 				e.printStackTrace();
 			}	
 			return predareProfesori;
+		}
+		
+		public static List<Specializare> predareSpecializare(List<Preda> listaPredare)
+		{
+			List<Specializare> predareSpecializare=new ArrayList<Specializare>();
+			Connection con=ConexiuneDB.conectare();	
+
+			int id_grupa;
+			int id_specializare=0;
+			boolean exista=false;
+			try{
+				if(con!=null){
+					for(Preda preda:listaPredare)
+					{
+						id_grupa=preda.getGrupa_id_grupa();
+						Specializare spec=new Specializare();
+						PreparedStatement stmt3= con.prepareStatement("select specializare_cod_specializare from grupa where id_grupa =?");
+						stmt3.setInt(1,id_grupa);
+						ResultSet rs3=stmt3.executeQuery(); 
+						while(rs3.next())  
+						{	
+							id_specializare=rs3.getInt("specializare_cod_specializare");
+						}
+						PreparedStatement stmt4= con.prepareStatement("select * from specializare where cod_specializare =?");
+						stmt4.setInt(1,id_specializare);
+						ResultSet rs4=stmt4.executeQuery(); 
+						while(rs4.next())  
+						{	
+							spec.setCod_specializare(Integer.parseInt(rs4.getString("cod_specializare")));
+							spec.setDenumire_specializare(rs4.getString("denumire_specializare"));
+							spec.setForma_invatamant(rs4.getString("forma_invatamant"));
+							
+						}
+						for(Specializare sp: predareSpecializare)
+							if(sp.getCod_specializare()==spec.getCod_specializare())
+								exista=true;
+						if(exista==false)		
+							predareSpecializare.add(spec);
+					}
+								
+				con.close();
+				}				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}	
+			return predareSpecializare;
 		}
 		
 		public static void insertPondere(int profesor,int disciplina,int grupa,int pondere)
@@ -1114,6 +1190,38 @@ public class PrelucrariDB {
 				}	
 				return listaProfesori;		
 			}
+			
+			public static Profesor returnProfesorInfo(int marca){
+
+				Connection con=ConexiuneDB.conectare();
+				Profesor profesor=new Profesor();
+				
+				try{
+					if(con!=null){
+					PreparedStatement stmt= con.prepareStatement("select * from profesor where marca=?");
+					stmt.setInt(1, marca);
+					System.out.println(stmt.toString());
+					ResultSet rs=stmt.executeQuery(); 
+					while(rs.next())  
+					{	
+						profesor.setMarca(Integer.parseInt(rs.getString("marca")));
+						profesor.setNume(rs.getString("nume"));
+						profesor.setPrenume(rs.getString("prenume"));
+						profesor.setTitulatura(rs.getString("titulatura"));
+						profesor.setCod_departament(Integer.parseInt(rs.getString("departament_cod_departament")));
+						profesor.setNume_utilizator(rs.getString("cont_nume_utilizator"));		
+					}
+					ConexiuneDB.closeResources(con, rs, stmt);
+					}	
+					
+				}
+				catch(SQLException e)
+				{
+					e.printStackTrace();
+				}	
+				return profesor;		
+			}
+			
 			
 			public static List<Profesor> returnProfesor(String titulatura,String departament){
 				List<Profesor> listaProfesori=new ArrayList<Profesor>();
