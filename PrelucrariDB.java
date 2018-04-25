@@ -484,6 +484,8 @@ public class PrelucrariDB {
 						for(Specializare sp: predareSpecializare)
 							if(sp.getCod_specializare()==spec.getCod_specializare())
 								exista=true;
+							else
+								exista=false;
 						if(exista==false)		
 							predareSpecializare.add(spec);
 					}
