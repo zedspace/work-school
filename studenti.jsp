@@ -50,7 +50,7 @@
  			<td><input type="text" value="<%=student.getCnp() %>" style="font-size:20px;" disabled size=13/></td>   
  			<td><input type="text" value="<%=student.getNume() %>" style="font-size:20px;" disabled size=30/></td>
  			<td><input type="text" value="<%=student.getPrenume() %>" style="font-size:20px;" disabled size=30/></td>
- 			<td><input type="text" value="<%=student.getForma_finantare() %>" style="font-size:20px;" disabled size=10/></td>
+ 			<td><input type="text" value="<%=student.getForma_finantare() %>" style="font-size:20px;" disabled size=6/></td>
     	</tr>
     	<%}%>
     	</table>

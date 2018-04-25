@@ -7,88 +7,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="css\profesorStyle.css">
 <title>Administrator</title>
-<style>
-body {
-    font-size: 28px;
-}
-
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 0;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-li a:hover {
-    background-color: #111;
-}
-
-.active {
-    background-color: #4CAF50;
-}
-.dropdown {
-    float: left;
-    overflow: hidden;
-}
-
-.dropdown .dropbtn {
-    font-size: 28px;    
-    border: none;
-    outline: none;
-    color: white;
-    padding: 14px 16px;
-    background-color: #333;
-    font-family: inherit;
-    margin: 0;
-}
-
-.navbar a:hover, .dropdown:hover .dropbtn {
-    background-color: #111;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-    float: none;
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-}
-
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-</style>
 </head>
 <body>
 <div class="header">
@@ -118,7 +38,36 @@ li a:hover {
   <li><a href="#contact">Notare Studenti</a></li>
 </ul>
 </form>
-<h3>Text</h3>
+
+<h3>Ponderi stabilite :</h3>
+<table>
+<tr>
+			<td>Titulatura</td>
+			<td>Nume</td>
+			<td>Prenume</td>
+			<td>Anul Universitar</td>
+			<td>Specializarea</td>
+			<td>Grupa</td>
+			<td>Disciplina</td>
+			<td>Tipul Disciplinei</td>
+			<td>Pondere</td>
+		</tr>
+<%List<Pondere> listaPondere=PrelucrariDB.returnPondere(); %>
+<%List<AfisarePondere> ponderiStabilite=PrelucrariDB.afisarePondere(listaPondere); %>
+	<%for(AfisarePondere pondere: ponderiStabilite){ %>
+		<tr>
+			<td><%=pondere.getTitulatura()%></td>
+			<td><%=pondere.getNumeProfesor()%></td>
+			<td><%=pondere.getPrenumeProfesor()%></td>
+			<td><%=pondere.getAn()%></td>
+			<td><%=pondere.getSpecializare()%></td>
+			<td><%=pondere.getGrupa()%></td>
+			<td><%=pondere.getNumeDisciplina()%></td>
+			<td><%=pondere.getTipDisciplina()%></td>
+			<td><input type="text" name="pondere" id="pondere" value="<%=pondere.getPondere()%>"/></td>
+		</tr>
+	<%}%>
+</table>	
 
 </body>
 <script>

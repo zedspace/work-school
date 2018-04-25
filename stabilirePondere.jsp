@@ -7,128 +7,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<style>
-body {
-    font-size: 28px;
-}
-
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 0;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-li a:hover {
-    background-color: #111;
-}
-
-.active {
-    background-color: #4CAF50;
-}
-.dropdown {
-    float: left;
-    overflow: hidden;
-}
-
-.dropdown .dropbtn {
-    font-size: 28px;    
-    border: none;
-    outline: none;
-    color: white;
-    padding: 14px 16px;
-    background-color: #333;
-    font-family: inherit;
-    margin: 0;
-}
-
-.navbar a:hover, .dropdown:hover .dropbtn {
-    background-color: #111;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-    float: none;
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-}
-
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-</style>
 <title>Stabilire Pondere</title>
 </head>
 <body>
-<div class="header">
-	<p><%
-		int idUser=Integer.parseInt(request.getSession().getValue("idUser").toString());
-		Profesor profesor=PrelucrariDB.returnProfesorInfo(idUser);
-		%>
-		<%=profesor.getTitulatura()+" "+profesor.getNume()+" "+profesor.getPrenume() %>
-	</p>
-</div>
 
-<ul>
-  <li><a href="#home">Home</a></li>
-  <li><a class="active" href="stabilirePondere.jsp" class="dropbtn">Stabilire ponderi</a></li>
-  <div class="dropdown">
-    <button class="dropbtn">Stabilire ponderi <i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-content">
-	    <%List<Preda> listaPredare=PrelucrariDB.returnPreda(idUser); %>
-		<%List<Specializare> predareSpecializare=PrelucrariDB.predareSpecializare(listaPredare); %>
-		<%for(Specializare predareSpec: predareSpecializare){ %>
-			 <a href="#"><%=predareSpec.getDenumire_specializare()%></a>
-		<%}%>
-    </div>
-  </div> 
-  <li><a href="#contact">Notare Studenti</a></li>
-</ul>
-
-<h3>Text</h3>
 <h3>Stabilirea ponderilor evaluarilor</h3>
 <form action="PondereServlet" name="admin" id="admin" method="POST" enctype="multipart/form-data">
-<h4>Stabileste ponderea disciplinelor</h4>
-<h5>Specializari disponibile</h5>
-<div id="profesoriAlocati" >
-		<table>
-		
-			
-		</table>	
-    </div>
-<table>
-</table>
 <table>
 <tr>
 <td><label>Selecteaza specializarea : </label></td>

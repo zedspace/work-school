@@ -44,14 +44,14 @@
  			<td><input type="text" name="denumire_specializare" id="denumire_specializare" value="<%=specializare.getDenumire_specializare() %>" size="50" style="font-size:20px;" disabled/></td>   
     		<td><input type="text" name="forma_invatamant" id="forma_invatamant" value="<%=specializare.getForma_invatamant() %>" size="17" style="font-size:20px;" disabled/></td>
     		<input type="hidden" name="cod_spec" id="cod_spec"/>
-			<td align="center"><button type="button" name="modifica" id="modifica" value="<%=specializare.getCod_specializare() %>" onclick="updateFunction(this,<%=i%>)" ><img src="C:\eclipse\Workspace\update-icon.png" alt="modifica" height="20" width="20"/></button></td>
+			<td align="center"><button type="button" name="modifica" id="modifica" value="<%=specializare.getCod_specializare() %>" onclick="updateFunction(this,<%=i%>)" style="font-size:20px;">Modifica</button></td>
 <%-- 			<td><button type="submit" name="sterge" id="sterge" value="<%=specializare.getCod_specializare() %>" onclick="return deleteFunction()"><img src="C:\eclipse\Workspace\remove-icon.png" alt="sterge" height="20" width="20"/></button></td> --%>
     	</tr>
     	<%i++;}%>
     </table>
     
-<button type="button" id="inapoi" onclick="location.href = 'admin.jsp';"><img src="C:\eclipse\Workspace\back-icon.png" alt="ianpoi" height="20" width="20" /></button>
-<button type="button" id="adauga" onclick="showFunctionAdd()"><img src="C:\eclipse\Workspace\add-icon.png" alt="adauga" height="20" width="20"/></button>
+<button type="button" id="inapoi" onclick="location.href = 'admin.jsp';" style="font-size:20px;">Inapoi</button>
+<button type="button" id="adauga" onclick="showFunctionAdd()" style="font-size:20px;">Adauga</button>
 <br><br><br>
 	<div id="adaugareSpecializare" style="display: none;">
 		<form id="adaugaSpec" method="post" action="UpdateServletSpec">

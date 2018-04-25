@@ -11,7 +11,7 @@
 <title>Administrator</title>
 </head>
 <body>
-<div class="wrap">
+
     <div class="meniu"> 
     <a href="departamente.jsp">Departamente</a> 
     <a href="specializari.jsp">Specializari</a> 
@@ -21,11 +21,13 @@
     <a href="studenti.jsp">Studenti</a>
     <a href="profesori.jsp">Profesori</a> 
     <a href="conturi.jsp">Conturi</a>
-    <a class="active" href="PaginaPrincipala.jsp">Delogare</a>
+    <a class="active" href="PaginaPrincipala.jsp" >Delogare</a>
     </div>
+    
     <div class="continut"><h1>Bine ai venit!</h1>
     <h2>Esti administratorul.</h2>
-</div>  
-</div>
+    <h3><%=session.getAttribute("nume") %></h3>
+	</div>  
+
 </body>
 </html>

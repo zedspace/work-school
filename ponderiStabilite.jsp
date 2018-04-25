@@ -7,9 +7,38 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="css\profesorStyle.css">
 <title>Ponderi Stabilite</title>
 </head>
 <body>
+<div class="header">
+	<p><%
+		int idUser=Integer.parseInt(request.getSession().getValue("idUser").toString());
+		Profesor profesor=PrelucrariDB.returnProfesorInfo(idUser);
+		%>
+		<%=profesor.getTitulatura()+" "+profesor.getNume()+" "+profesor.getPrenume() %>
+	</p>
+</div>
+
+<form id="form" method="POST" action="PondereServlet">
+<ul>
+  <li><a href="#home">Home</a></li>
+  <div class="dropdown">
+    <button class="dropbtn">Stabilire ponderi <i class="fa fa-caret-down"></i></button>
+    <div class="dropdown-content">
+	    <%List<Preda> listaPredare=PrelucrariDB.returnPreda(idUser); %>
+		<%List<Specializare> predareSpecializare=PrelucrariDB.predareSpecializare(listaPredare); %>
+		<%for(Specializare predareSpec: predareSpecializare){ %>
+			 <a href="PondereServlet?cod=<%=predareSpec.getCod_specializare()%>"><%=predareSpec.getDenumire_specializare()%></a>
+<!-- 			 <input type="hidden" name="cod" id="cod" value="0"/> -->
+			 <%request.getSession().putValue("spec",predareSpec.getCod_specializare());%>
+		<%}%>
+    </div>
+  </div> 
+  <li><a href="#contact">Notare Studenti</a></li>
+</ul>
+</form>
+
 <h3>Ponderi stabilite :</h3>
 <table>
 <tr>
